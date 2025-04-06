@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GastosVIP 😅</title>
+  <style>
+    :root {
+      --primary: #6c5ce7;
+      --secondary: #a29bfe;
+      --dark: #2d3436;
+      --light: #f5f6fa;
+      --danger: #ff7675;
+      --bg: #f5f6fa;
+      --text: #2d3436;
+      --neon-cyan: #0ff;
+      --neon-pink: #f0f;
+      --neon-red: #ff0e0e;
+      --neon-green: #39ff14;
+      --error: #ff4444;
+    }
+
+    .dark-mode {
+      --bg: #1e272e;
+      --text: #f5f6fa;
+      --dark: #f5f6fa;
+      --light: #2d3436;
+      --error: #ff6b6b;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Arial", sans-serif;
+    }
+
+    body {
+        background: var(--bg);
+      color: var(--text);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      min-height: -webkit-fill-available;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    html {
+      height: -webkit-fill-available;
+    }
+
+    .app {
+      text-align: center;
+      padding: 2rem;
+      max-width: 400px;
+      width: 100%;
+      position: relative;
+      background: var(--bg);
+      
+      border-radius: 12px;
+    }
+
+    h1 {
+      margin-bottom: 1.5rem;
+      color: var(--primary);
+      font-size: 2rem;
+      text-shadow: 0 0 5px rgba(108, 92, 231, 0.3);
+    }
+
+    .total {
+      font-size: 3rem;
+      margin: 1.5rem 0;
+      color: var(--text);
+      font-weight: bold;
+      transition: transform 0.3s;
+    }
+
+    .total:hover {
+      transform: scale(1.05);
+    }
+
+    .input-container {
+      position: relative;
+      margin: 2rem auto;
+      width: 200px;
+      height: 200px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .input-circle {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: var(--primary);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 10px 30px rgba(108, 92, 231, 0.3);
+      transition: transform 0.3s, box-shadow 0.3s;
+      cursor: pointer;
+    }
+
+    .input-circle:hover {
+      transform: scale(1.05);
+      box-shadow: 0 15px 40px rgba(108, 92, 231, 0.4);
+    }
+
+    .input-circle input {
+      width: 80%;
+      height: 40px;
+      border: none;
+      background: transparent;
+      color: white;
+      font-size: 1.5rem;
+      text-align: center;
+      outline: none;
+      border-bottom: 2px solid rgba(255, 255, 255, 0.5);
+      transition: border-color 0.3s;
+    }
+
+    .input-circle input::placeholder {
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    .input-circle input:focus {
+      border-color: white;
+    }
+
+    .reset-btn {
+      margin-top: 1.5rem;
+      padding: 0.5rem 1.5rem;
+      background: var(--danger);
+      color: white;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: transform 0.3s, opacity 0.3s;
+      opacity: 0.8;
+    }
+
+    .reset-btn:hover {
+      transform: scale(1.05);
+      opacity: 1;
+    }
+
+    .dark-mode-btn {
+      position: absolute;
+      top: 34px;
+      right: 20px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 1.2rem;
+      transition: transform 0.3s;
+    }
+
+    .dark-mode-btn:hover {
+      transform: rotate(30deg);
+    }
+
+    .sound-btn {
+      position: absolute;
+      top: 35px;
+      left: 20px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 1.2rem;
+      transition: transform 0.3s;
+      z-index: 10;
+    }
+
+    .sound-btn:hover {
+      transform: scale(1.1);
+    }
+
+    .sound-off {
+      opacity: 0.5;
+    }
+
+    .frase-random {
+      margin-top: 1rem;
+      font-size: 1rem;
+      color: var(--primary);
+      min-height: 24px;
+      font-style: italic;
+    }
+
+    .error-message {
+      color: var(--error);
+      margin: 10px 0;
+      font-size: 0.9rem;
+      min-height: 20px;
+      transition: all 0.3s;
+      opacity: 0;
+    }
+
+    .error-message.show {
+      opacity: 1;
+    }
+
+    /* Modal de Confirmación */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+      animation: modalEntry 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .modal-content {
+      background: var(--bg);
+      padding: 1.5rem;
+      border-radius: 10px;
+      max-width: 300px;
+      width: 90%;
+      text-align: center;
+      border: 2px solid var(--neon-cyan);
+      box-shadow: 0 0 10px var(--neon-cyan), 0 0 20px var(--neon-cyan),
+        0 0 30px var(--neon-pink), inset 0 0 15px var(--neon-cyan);
+      animation: glitch 0.5s infinite alternate;
+    }
+
+    .modal-content p {
+      margin-bottom: 1rem;
+      font-weight: bold;
+    }
+
+    .modal-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .modal-buttons button {
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: all 0.3s;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .modal-buttons button:hover {
+      transform: scale(1.1);
+      filter: brightness(1.2);
+    }
+
+    #confirmReset {
+      background: var(--neon-red);
+      color: white;
+      text-shadow: 0 0 5px #fff;
+      box-shadow: 0 0 10px var(--neon-red), 0 0 20px var(--neon-red);
+    }
+
+    #cancelReset {
+      background: var(--neon-green);
+      color: #000;
+      box-shadow: 0 0 10px var(--neon-green), 0 0 20px var(--neon-green);
+    }
+
+    /* Animaciones */
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.05);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    @keyframes glitch {
+      0% {
+        transform: translate(0);
+        box-shadow: 0 0 10px var(--neon-cyan), 0 0 20px var(--neon-cyan),
+          0 0 30px var(--neon-pink);
+      }
+      20% {
+        transform: translate(-2px, 2px);
+      }
+      40% {
+        transform: translate(-2px, -2px);
+      }
+      60% {
+        transform: translate(2px, 2px);
+      }
+      80% {
+        transform: translate(2px, -2px);
+      }
+      100% {
+        transform: translate(0);
+        box-shadow: 0 0 15px var(--neon-cyan), 0 0 25px var(--neon-cyan),
+          0 0 35px var(--neon-pink), 0 0 45px var(--neon-pink);
+      }
+    }
+
+    @keyframes modalEntry {
+      0% {
+        opacity: 0;
+        transform: scale(0.5) rotate(20deg);
+      }
+      50% {
+        transform: scale(1.1) rotate(-10deg);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1) rotate(0);
+      }
+    }
+
+    .pulse {
+      animation: pulse 0.5s ease-in-out;
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      :root {
+        font-size: 14px;
+      }
+
+      .app {
+        padding: 1rem;
+      }
+
+      h1 {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+      }
+
+      .total {
+        font-size: 2rem;
+        margin: 1rem 0;
+      }
+
+      .input-container {
+        width: 150px;
+        height: 150px;
+        margin: 1rem auto;
+      }
+
+      .input-circle input {
+        font-size: 1.2rem;
+      }
+
+      .reset-btn {
+        margin-top: 1rem;
+        padding: 0.4rem 1.2rem;
+      }
+
+      .dark-mode-btn {
+        top: 10px;
+        right: 10px;
+        width: 35px;
+        height: 35px;
+        font-size: 1rem;
+      }
+
+      .sound-btn {
+        top: 10px;
+        left: 10px;
+        width: 35px;
+        height: 35px;
+        font-size: 1rem;
+      }
+
+      .modal-content {
+        animation: glitch 1s infinite alternate;
+      }
+    }
+
+    @media (max-width: 400px) {
+      :root {
+        font-size: 12px;
+      }
+
+      .input-container {
+        width: 130px;
+        height: 130px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <button class="sound-btn" id="soundBtn">🔊</button>
+    <button class="dark-mode-btn" id="darkModeBtn">🌓</button>
+    <h1>Gastos VIP 😅</h1>
+    <div class="total" id="total">$0</div>
+    <div class="input-container">
+      <div class="input-circle">
+        <input type="number" id="inputGasto" placeholder="💸" autofocus />
+      </div>
+    </div>
+    <div class="error-message" id="errorMessage"></div>
+    <div class="frase-random" id="fraseRandom"></div>
+    <button class="reset-btn" id="resetBtn">Ojos que no ven...</button>
+
+    <!-- Modal de Confirmación -->
+    <div id="confirmModal" class="modal glitch-effect">
+      <div class="modal-content neon-box">
+        <p>¡CUIDADO! 🤯<br />¿Borrar TODOS tus pecados financieros?</p>
+        <div class="modal-buttons">
+          <button id="confirmReset" class="neon-btn danger">¡EXTERMINAR!</button>
+          <button id="cancelReset" class="neon-btn safe">¡NOOO!</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Variables globales
+    let total = 0;
+    let soundEnabled = true;
+
+    // Elementos del DOM
+    const inputGasto = document.getElementById("inputGasto");
+    const totalElement = document.getElementById("total");
+    const resetBtn = document.getElementById("resetBtn");
+    const darkModeBtn = document.getElementById("darkModeBtn");
+    const soundBtn = document.getElementById("soundBtn");
+    const errorMessage = document.getElementById("errorMessage");
+    const fraseRandom = document.getElementById("fraseRandom");
+
+    // Función para mostrar mensajes de error
+    function showError(message) {
+      errorMessage.textContent = message;
+      errorMessage.classList.add("show");
+      
+      setTimeout(() => {
+        errorMessage.classList.remove("show");
+      }, 3000);
+    }
+
+    // Función para actualizar el botón de sonido
+    function updateSoundButton() {
+      soundBtn.textContent = soundEnabled ? "🔊" : "🔇";
+      soundBtn.classList.toggle("sound-off", !soundEnabled);
+    }
+
+    // Función para reproducir sonidos
+    const playSound = (type) => {
+      if (!soundEnabled) return;
+      
+      const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      const oscillator = audioCtx.createOscillator();
+      const gainNode = audioCtx.createGain();
+
+      oscillator.connect(gainNode);
+      gainNode.connect(audioCtx.destination);
+      gainNode.gain.value = 0.1;
+
+      if (type === "small") {
+        oscillator.type = "square";
+        oscillator.frequency.setValueAtTime(800, audioCtx.currentTime);
+        oscillator.frequency.exponentialRampToValueAtTime(
+          100,
+          audioCtx.currentTime + 0.3
+        );
+        oscillator.start();
+        oscillator.stop(audioCtx.currentTime + 0.3);
+      } else if (type === "large") {
+        oscillator.type = "sawtooth";
+        oscillator.frequency.setValueAtTime(50, audioCtx.currentTime);
+        oscillator.start();
+        oscillator.stop(audioCtx.currentTime + 0.5);
+      }
+    };
+
+    // Frases aleatorias
+    const frases = [
+      "¡Otro café innecesario! ☕",
+      "¿En serio compraste eso? 🤨",
+      "RIP tu presupuesto 💀",
+      "¡Fue un gasto 'inversión', cierto? 😅",
+      "Al menos lo disfrutaste... ¿no? 🎉",
+      "¡El agujero negro de tu billetera! 🕳️",
+    ];
+
+    const getFraseRandom = () => {
+      fraseRandom.textContent = frases[Math.floor(Math.random() * frases.length)];
+    };
+
+    // Emojis dinámicos
+    const updateEmoji = (monto) => {
+      if (monto < 500) inputGasto.placeholder = "☕";
+      else if (monto < 1000) inputGasto.placeholder = "🍔";
+      else if (monto < 5000) inputGasto.placeholder = "🎮";
+      else inputGasto.placeholder = "💸";
+    };
+
+    // Cargar preferencias
+    function loadPreferences() {
+      const savedTotal = localStorage.getItem("gastosInnecesarios");
+      if (savedTotal) {
+        total = parseFloat(savedTotal);
+        updateTotal();
+      }
+
+      const soundPref = localStorage.getItem("soundEnabled");
+      soundEnabled = soundPref === null ? true : soundPref === "true";
+      updateSoundButton();
+
+      const darkMode = localStorage.getItem("darkMode") === "true";
+      if (darkMode) {
+        document.body.classList.add("dark-mode");
+        darkModeBtn.textContent = "🌞";
+      }
+    }
+
+    // Actualizar total
+    function updateTotal() {
+      totalElement.textContent = `$${total.toFixed(2)}`;
+      totalElement.classList.add("pulse");
+      setTimeout(() => totalElement.classList.remove("pulse"), 500);
+    }
+
+    // Guardar en localStorage
+    function saveTotal() {
+      localStorage.setItem("gastosInnecesarios", total.toString());
+    }
+
+    // Event Listeners
+    darkModeBtn.addEventListener("click", () => {
+      document.body.classList.toggle("dark-mode");
+      const isDarkMode = document.body.classList.contains("dark-mode");
+      localStorage.setItem("darkMode", isDarkMode.toString());
+      darkModeBtn.textContent = isDarkMode ? "🌞" : "🌓";
+    });
+
+    soundBtn.addEventListener("click", () => {
+      soundEnabled = !soundEnabled;
+      localStorage.setItem("soundEnabled", soundEnabled.toString());
+      updateSoundButton();
+      playSound("small");
+    });
+
+    inputGasto.addEventListener("keypress", (e) => {
+      if (e.key === "Enter") {
+        const valor = inputGasto.value.trim();
+        
+        // Validación 1: Campo vacío
+        if (valor === "") {
+          showError("⚠️ Por favor ingresa un valor");
+          playSound("small");
+          return;
+        }
+        
+        const monto = parseFloat(valor);
+        
+        // Validación 2: No es un número
+        if (isNaN(monto)) {
+          showError("⚠️ Solo se permiten valores numéricos");
+          inputGasto.value = "";
+          playSound("small");
+          return;
+        }
+        
+        // Validación 3: Número negativo
+        if (monto < 0) {
+          showError("⚠️ No se permiten valores negativos");
+          inputGasto.value = "";
+          playSound("small");
+          return;
+        }
+        
+        // Validación 4: Número demasiado grande
+        if (monto > 1000000) {
+          showError("⚠️ ¿Seguro que gastaste tanto?");
+          playSound("large");
+          return;
+        }
+        
+        // Si pasa todas las validaciones
+        total += monto;
+        updateTotal();
+        saveTotal();
+        updateEmoji(monto);
+        getFraseRandom();
+        playSound(monto < 1000 ? "small" : "large");
+        inputGasto.value = "";
+      }
+    });
+
+    resetBtn.addEventListener("click", () => {
+      document.getElementById("confirmModal").style.display = "flex";
+      playSound("small");
+    });
+
+    document.getElementById("confirmReset").addEventListener("click", () => {
+      total = 0;
+      updateTotal();
+      saveTotal();
+      inputGasto.placeholder = "💸";
+      fraseRandom.textContent = "";
+      document.getElementById("confirmModal").style.display = "none";
+      playSound("large");
+    });
+
+    document.getElementById("cancelReset").addEventListener("click", () => {
+      document.getElementById("confirmModal").style.display = "none";
+      playSound("small");
+    });
+
+    // Inicializar
+    loadPreferences();
+  </script>
+</body>
+</html>
