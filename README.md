@@ -1,13 +1,13 @@
 # Gastos VIP 😅 | Registro Minimalista de Gastos Innecesarios
 
-[![Demo en Vivo](#)](#) <!-- Reemplazar con link real si tienes deploy -->
-[![Licencia MIT](https://img.shields.io/badge/Licencia-MIT-blue.svg)](LICENSE)
+https://gastosvip.netlify.app/ 
+[![Licencia MIT](https://img.shields.io/badge/Licencia-MIT-blue.svg)](LICENSE.md)
 
 > *"¿Cuánto gastas realmente en lo que no necesitas?"*  
 > Un experimento en simplicidad extrema y consciencia financiera.
 
 ## 🎯 Motivación
-Como ex-artista reconvertido a desarrollador, necesitaba:
+Como trabajador de la cultura reconvertido a desarrollador, necesitaba:
 - Una herramienta **sin distracciones** para mis gastos impulsivos
 - Dominar **JavaScript puro** sin frameworks
 - Comprender cómo los conceptos básicos pueden resolver problemas reales
