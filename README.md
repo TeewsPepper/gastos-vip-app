@@ -3,70 +3,84 @@
 https://gastosvip.netlify.app/ 
 [![Licencia MIT](https://img.shields.io/badge/Licencia-MIT-blue.svg)](LICENSE.md)
 
-> *"¿Cuánto gastas realmente en lo que no necesitas?"*  
-> Un experimento en simplicidad extrema y consciencia financiera.
+> *"¿Cuánto gastas realmente en lo que no necesitas?"* 
+
+> *"Un experimento en simplicidad extrema y consciencia financiera."*
 
 ## 🎯 Motivación
 Como trabajador de la cultura reconvertido a desarrollador, necesitaba:
-- Una herramienta **sin distracciones** para mis gastos impulsivos
-- Dominar **JavaScript puro** sin frameworks
-- Comprender cómo los conceptos básicos pueden resolver problemas reales
+- Una herramienta **sin distracciones** para mis gastos impulsivos.
+- Dominar **JavaScript puro** sin frameworks.
+- Comprender cómo los conceptos básicos pueden resolver problemas reales.
 
+
+
+## El corazón de la app (solo 5 líneas clave)
 ```javascript
-// El corazón de la app (solo 5 líneas clave)
 
+const inputGasto = document.getElementById("inputGasto");
 inputGasto.addEventListener('keypress', (e) => {
+    /*   
+       * 1. Este bloque detecta cuando el usuario presiona una tecla
+       *    dentro del campo de input (inputGasto).
+       * 
+       * 2. La condición IF hace dos verificaciones importantes:
+       *    - e.key === 'Enter': Revisa si la tecla presionada fue Enter
+       *    - !isNaN(parseFloat(e.target.value)): Convierte el texto ingresado a número
+       *      y verifica que NO sea "Not a Number" (NaN)
+       *
+       * 3. Cuando se cumplen ambas condiciones:
+       *    - parseFloat(e.target.value): Convierte el texto del input a número decimal
+       *    - total += ...: Suma el nuevo gasto al acumulado total
+       *    - localStorage.setItem(): Guarda el total actualizado en el almacenamiento
+       *      local del navegador (persiste al cerrar/abrir la página)
+       *
+       * Notas técnicas:
+       * - Usamos parseFloat() en lugar de Number() para permitir decimales
+       * - !isNaN() es nuestra validación contra valores no numéricos
+       * - localStorage solo almacena strings (pero JS hace conversión implícita)
+       */
+      if (e.key === 'Enter' && !isNaN(parseFloat(e.target.value))) {
+        total += parseFloat(e.target.value);
+        localStorage.setItem('gastos', total);
+      }
+    });
 
-/*  
-   * [CÓDIGO CLAVE] - Explicación extendida:
-   * 
-   * 1. Este bloque detecta cuando el usuario presiona una tecla
-   *    dentro del campo de input (inputGasto).
-   * 
-   * 2. La condición IF hace dos verificaciones importantes:
-   *    - e.key === 'Enter': Revisa si la tecla presionada fue Enter
-   *    - !isNaN(parseFloat(e.target.value)): Convierte el texto ingresado a número
-   *      y verifica que NO sea "Not a Number" (NaN)
-   *
-   * 3. Cuando se cumplen ambas condiciones:
-   *    - parseFloat(e.target.value): Convierte el texto del input a número decimal
-   *    - total += ...: Suma el nuevo gasto al acumulado total
-   *    - localStorage.setItem(): Guarda el total actualizado en el almacenamiento
-   *      local del navegador (persiste al cerrar/abrir la página)
-   *
-   * Notas técnicas:
-   * - Usamos parseFloat() en lugar de Number() para permitir decimales
-   * - !isNaN() es nuestra validación contra valores no numéricos
-   * - localStorage solo almacena strings (pero JS hace conversión implícita)
-   */
-  if (e.key === 'Enter' && !isNaN(parseFloat(e.target.value))) {
-    total += parseFloat(e.target.value);
-    localStorage.setItem('gastos', total);
-  }
-});
+    /* Usamos todo el poder de las funciones nombradas para mostrar los mensajes de error */
+
+     function showError(message) {
+      errorMessage.textContent = message;
+      errorMessage.classList.add("show");
+      
+      setTimeout(() => {
+        errorMessage.classList.remove("show");
+      }, 3000);
+    }
+
+```
 
 
-✨ Características
+## Características
 
-    Single-Purpose: Solo registra gastos innecesarios
+   1. Single-Purpose: Solo registra gastos innecesarios
 
-    Offline-First: Usa localStorage (no necesita internet)
+   2. Online-First: Luego usa localStorage (no necesita internet)
 
-    Dark Mode: CSS Variables + Toggle JavaScript
+   3. Dark Mode: CSS Variables + Toggle JavaScript
 
-    Feedback Inmediato: Sonidos con Web Audio API
+   4. Feedback Inmediato: Sonidos con Web Audio API
 
-    Peso Ligero: 18KB (vs 2MB+ de apps tradicionales)
+   5. Peso Ligero: 18KB (vs 2MB+ de apps tradicionales)
 
-🛠️ Tecnologías Usadas
+## Tecnologías Usadas
 
     JavaScript Vanilla (ES6+):
 
-        localStorage
+        - localStorage
 
-        addEventListener
+        - addEventListener
 
-        AudioContext
+        - AudioContext
 
     CSS Moderno:
 
@@ -74,7 +88,7 @@ inputGasto.addEventListener('keypress', (e) => {
 
         Animaciones con keyframes
 
-        Diseño Responsive
+        Diseño Responsive (@media)
 
     0 Dependencias
 
@@ -82,22 +96,26 @@ inputGasto.addEventListener('keypress', (e) => {
     🚀 Cómo Usarlo
 
     Clona el repositorio:
-    bash
-    Copy
 
-    git clone https://github.com/tuusuario/gastos-vip.git
+    Abre una terminal en tu PC y en la línea de comandos sitúate en el directorio donde copiarás el proyecto.
 
-    Abre index.html en tu navegador (¡no necesita servidor!)
+    Escribe:
+    git clone https://github.com/TeewsPepper/gastos-vip-app.git
+
+    Una vez finalizada la descarga abre el directorio de destino y busca el archivo index.html
+
+    Sobre el index.html haz click derecho con el botón del mouse y elige la opción abrir.
+
+    La aplicación se abrirá en el navegador wweb de tu preferencia.
 
     Escribe el monto y presiona Enter.
 
-📚 Aprendizajes Clave
+    📚 Aprendizajes Clave
 
     Conceptos Básicos Poderosos:
-    javascript
-    Copy
 
     // Variables, Eventos, Condicionales y localStorage
+
     let total = 0;
     elemento.addEventListener('click', () => { ... });
     if (condición) { ... }
